@@ -27,6 +27,6 @@ jobs:
             - name: Edit README
               env:
                   ISSUE_CONTENT: ${{ toJson(github.event.issue) }}
-              run: python3 ./src/edit_readme.py
+              run: python3 .github/workflows/edit_readme.py
             - name: Close issue
               run: gh issue close "$ISSUE_NUMBER"
