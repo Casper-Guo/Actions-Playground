@@ -10,7 +10,6 @@ jobs:
         runs-on: ubuntu-latest
         env:
             ISSUE_NUMBER: ${{ github.event.issue.number }}
-            BRANCH_NAME: new-position-"$ISSUE_NUMBER"
             AUTHOR: ${{ github.event.issue.user.login }}
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         permissions:
@@ -28,7 +27,7 @@ jobs:
               env:
                   ISSUE_CONTENT: ${{ toJson(github.event.issue) }}
               run: |
-                  git checkout -b "$BRANCH_NAME"
+                  git checkout -b new-position-"$ISSUE_NUMBER"
                   git config user.email "action@github.com"
                   git config user.name "GitHub Action"
                   python3 .github/workflows/edit_readme.py
