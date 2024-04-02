@@ -35,17 +35,16 @@ def format_addition(response: tuple[str]) -> str:
     company, career_url, pos, pos_url, location, degree, note = response
     career_url = shorten_url(career_url)
     pos_url = shorten_url(pos_url)
-    return f"| [{company}]({career_url}) | [{pos}]({pos_url}) | {location} | {degree} | {note if note != '_No response_' else ''}".strip()
+    return f"\n| [{company}]({career_url}) | [{pos}]({pos_url}) | {location} | {degree} | {note if note != '_No response_' else ''}".rstrip()
 
 
 if __name__ == "__main__":
-    form_body = json.loads(os.environ.get('ISSUE_CONTENT', '""'))["body"]
-    # with open(".github/workflows/test.json", "r") as f:
-    #     form_body = json.load(f)["body"]
+    # form_body = json.loads(os.environ.get('ISSUE_CONTENT', '""'))["body"]
+    with open(".github/workflows/test.json", "r") as f:
+        form_body = json.load(f)["body"]
     logging.debug("Received raw form body:\n%s", form_body)
     response = parse_response(form_body)
     logging.info("Parsed form responses:\n%s", response)
 
     with open("README.md", "a") as readme:
-        readme.write("\n")
         readme.write(format_addition(response))
