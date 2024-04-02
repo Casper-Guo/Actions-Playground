@@ -1,6 +1,10 @@
 import json
 import re
 import os
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    format="%(levelname)s\t%(filename)s\t%(lineno)s\t%(message)s")
 
 
 def parse_response(response: str) -> tuple[str]:
@@ -17,7 +21,9 @@ def parse_response(response: str) -> tuple[str]:
 def shorten_url(url: str) -> str:
     "Remove query strings from submitted URLs."
     # Capture the url starting at www until the first question mark
-    return re.search(r"^(http[s]?:\/\/)?([^\s\?]*)\?*", url).group(2)
+    shortened_url = re.search(r"^(http[s]?:\/\/)?([^\s\?]*)\?*", url).group(2)
+    logging.debug("Shortened URL %s to %s", url, shortened_url)
+    return shortened_url
 
 
 def format_addition(response: tuple[str]) -> str:
@@ -36,7 +42,9 @@ if __name__ == "__main__":
     form_body = json.loads(os.environ.get('ISSUE_CONTENT', '""'))["body"]
     # with open(".github/workflows/test.json", "r") as f:
     #     form_body = json.load(f)["body"]
+    logging.debug("Received raw form body:\n%s", form_body)
     response = parse_response(form_body)
+    logging.info("Parsed form responses:\n%s", response)
 
     with open("README.md", "a") as readme:
         readme.write("\n")
