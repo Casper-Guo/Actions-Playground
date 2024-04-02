@@ -10,6 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
             ISSUE_NUMBER: ${{ github.event.issue.number }}
+            AUTHOR: ${{ github.event.issue.user.login }}
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         permissions:
             issues: write
@@ -19,14 +20,19 @@ jobs:
             - name: Assign Issue to Author
               uses: pozil/auto-assign-issue@v1
               with:
-                  assignees: "${{ github.event.issue.user.login }}"
+                  assignees: "$AUTHOR"
+            - name: Edit README
+              env:
+                  ISSUE_CONTENT: ${{ toJson(github.event.issue) }}
+              run: |
+                  git checkout -b new-position-"$ISSUE_NUMBER"
+                  python3 .github/workflows/edit_readme.py
+                  git add README.md
+                  git commit -m "New positions added by $AUTHOR in issue #$ISSUE_NUMBER."
+                  git push -u origin HEAD
             - name: Thank-you Message
               run: gh issue comment "$ISSUE_NUMBER" --body "$MESSAGE"
               env:
                   MESSAGE: Thank you for submitting new position(s)! Our maintainers will review your PR soon.
-            - name: Edit README
-              env:
-                  ISSUE_CONTENT: ${{ toJson(github.event.issue) }}
-              run: python3 .github/workflows/edit_readme.py
             - name: Close issue
               run: gh issue close "$ISSUE_NUMBER"

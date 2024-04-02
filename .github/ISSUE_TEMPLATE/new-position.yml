@@ -1,52 +1,52 @@
 name: New Position
-description: Use this template to submit a new position
+description: Use this template to submit a new position. If you want to submit multiple positions, create an issue for each one.
 title: "New Position"
 labels: New Position
 
 body:
-- type: markdown
-  attributes:
-    value: |
-      Before you submit a new position for review, please do the following:
-      - Search the README and ensure it is not already reported.
-      - Read the contribution guideline and submit the information in the correct format.
+    - type: markdown
+      attributes:
+          value: |
+              Before you submit a new position for review, please do the following:
+              - Search the README and ensure it is not already reported.
+              - Read the contribution guideline and submit the information in the correct format.
 
-- type: textarea
-  attributes:
-    label: "Name of the company offering the position:"
-  validations:
-    required: true
+    - type: textarea
+      attributes:
+          label: "Name of the company offering the position:"
+      validations:
+          required: true
 
-- type: textarea
-  attributes:
-    label: "URL of the company's general career page:"
-  validations:
-    required: true
+    - type: textarea
+      attributes:
+          label: "URL of the company's general career page:"
+      validations:
+          required: true
 
-- type: textarea
-  attributes:
-    label: "Name of the position:"
-  validations:
-    required: true
+    - type: textarea
+      attributes:
+          label: "Name of the position:"
+      validations:
+          required: true
 
-- type: textarea
-  attributes:
-    label: "URL of the career listing page:"
-  validations:
-    required: true
+    - type: textarea
+      attributes:
+          label: "URL of the career listing page:"
+      validations:
+          required: true
 
-- type: textarea
-  attributes:
-    label: "Location where the position is offered:"
-  validations:
-    required: true
+    - type: textarea
+      attributes:
+          label: "Location where the position is offered:"
+      validations:
+          required: true
 
-- type: textarea
-  attributes:
-    label: "The minimum degree requirement of the position (put Bachelors if not specified):"
-  validations:
-    required: true
+    - type: textarea
+      attributes:
+          label: "The minimum degree requirement of the position (put Bachelors if not specified):"
+      validations:
+          required: true
 
-- type: textarea
-  attributes:
-    label: "Any additional helpful information about the position (sponsorship status, security clarence requirement etc.):"
+    - type: textarea
+      attributes:
+          label: "Any additional helpful information about the position (sponsorship status, security clarence requirement etc.):"
