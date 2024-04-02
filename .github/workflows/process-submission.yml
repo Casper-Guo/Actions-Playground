@@ -1,28 +1,32 @@
 name: Update README from Issue
 on:
-  issues:
-    # TODO: remove reopened trigger
-    types: [opened, reopened]
+    issues:
+        # TODO: remove reopened trigger
+        types: [opened, reopened]
 
 jobs:
-  process-issue:
-    if: contains(github.event.issue.labels.*.name, 'New Position')
-    runs-on: ubuntu-latest
-    env:
-      NUMBER: ${{ github.event.issue.number }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    permissions:
-      issues: write
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-      - name: Assign issue to author
-        uses: pozil/auto-assign-issue@v1
-        with:
-          assignees: "${{ github.event.issue.user.login }}"
-      - name: Thank-you Message
-        run: gh issue comment "$NUMBER" --body "$BODY"
+    process-issue:
+        if: contains(github.event.issue.labels.*.name, 'New Position')
+        runs-on: ubuntu-latest
         env:
-          BODY: Thank you for submitting new position(s)! Our maintainers will review your PR soon.
-      - name: Close issue
-        run: gh issue close "$NUMBER"
+            ISSUE_NUMBER: ${{ github.event.issue.number }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        permissions:
+            issues: write
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v2
+            - name: Assign Issue to Author
+              uses: pozil/auto-assign-issue@v1
+              with:
+                  assignees: "${{ github.event.issue.user.login }}"
+            - name: Thank-you Message
+              run: gh issue comment "$ISSUE_NUMBER" --body "$MESSAGE"
+              env:
+                  MESSAGE: Thank you for submitting new position(s)! Our maintainers will review your PR soon.
+            - name: Edit README
+              env:
+                  ISSUE_CONTENT: ${{ toJson(github.event.issue) }}
+              run: python3 ./src/edit_readme.py
+            - name: Close issue
+              run: gh issue close "$ISSUE_NUMBER"
