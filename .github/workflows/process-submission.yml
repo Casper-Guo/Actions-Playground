@@ -36,8 +36,9 @@ jobs:
                   git push -u origin HEAD
             - name: Pull Request
               # TODO: add --reviewer flag to request review from education committee team
-              run: gh pr create --assignee "$AUTHOR" --base main --fill --body "Reference issue ($ISSUE_NUMBER)" --label "New Position"
+              run: gh pr create --assignee "$AUTHOR" --base main --fill --body "Reference issue (#$ISSUE_NUMBER)" --label "New Position"
             - name: Thank-you Message
+              # This step can be taken without needing all previous steps to succeed
               run: gh issue comment "$ISSUE_NUMBER" --body "$MESSAGE"
               env:
                   MESSAGE: Thank you for submitting a new position! Our maintainers will review your PR soon.
