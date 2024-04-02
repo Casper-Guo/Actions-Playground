@@ -39,9 +39,9 @@ def format_addition(response: tuple[str]) -> str:
 
 
 if __name__ == "__main__":
-    # form_body = json.loads(os.environ.get('ISSUE_CONTENT', '""'))["body"]
-    with open(".github/workflows/test.json", "r") as f:
-        form_body = json.load(f)["body"]
+    form_body = json.loads(os.environ.get('ISSUE_CONTENT', '""'))["body"]
+    # with open(".github/workflows/test.json", "r") as f:
+    #     form_body = json.load(f)["body"]
     logging.debug("Received raw form body:\n%s", form_body)
     response = parse_response(form_body)
     logging.info("Parsed form responses:\n%s", response)

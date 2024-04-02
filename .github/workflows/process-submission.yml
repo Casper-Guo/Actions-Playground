@@ -10,6 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
             ISSUE_NUMBER: ${{ github.event.issue.number }}
+            BRANCH_NAME: new-position-"$ISSUE_NUMBER"
             AUTHOR: ${{ github.event.issue.user.login }}
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         permissions:
@@ -27,16 +28,21 @@ jobs:
               env:
                   ISSUE_CONTENT: ${{ toJson(github.event.issue) }}
               run: |
-                  git checkout -b new-position-"$ISSUE_NUMBER"
+                  git checkout -b "$BRANCH_NAME"
                   git config user.email "action@github.com"
                   git config user.name "GitHub Action"
                   python3 .github/workflows/edit_readme.py
                   git add README.md
                   git commit -m "New positions added by $AUTHOR in issue #$ISSUE_NUMBER."
                   git push -u origin HEAD
+            - name: Pull Request
+              # TODO: add --reviewer flag to request review from education committee team
+              run: gh pr create --assignee "$AUTHOR" --base main --fill --body "$BODY" --label "New Position"
+              env:
+                  BODY: "Reference: $ISSUE_NUMBER"
             - name: Thank-you Message
               run: gh issue comment "$ISSUE_NUMBER" --body "$MESSAGE"
               env:
-                  MESSAGE: Thank you for submitting new position(s)! Our maintainers will review your PR soon.
+                  MESSAGE: Thank you for submitting a new position! Our maintainers will review your PR soon.
             - name: Close issue
               run: gh issue close "$ISSUE_NUMBER"
