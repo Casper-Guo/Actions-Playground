@@ -35,7 +35,7 @@ def format_addition(response: tuple[str]) -> str:
     company, career_url, pos, pos_url, location, degree, note = response
     career_url = shorten_url(career_url)
     pos_url = shorten_url(pos_url)
-    return f"\n| [{company}]({career_url}) | [{pos}]({pos_url}) | {location} | {degree} | {note if note != '_No response_' else ''}".rstrip()
+    return f"| [{company}]({career_url}) | [{pos}]({pos_url}) | {location} | {degree} | {note if note != '_No response_' else ''}\n"
 
 
 if __name__ == "__main__":
